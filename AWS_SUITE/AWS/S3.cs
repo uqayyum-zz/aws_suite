@@ -140,5 +140,55 @@ namespace AWS_SUITE
             }
         }
         #endregion
+
+        #region Download
+        public void DownloadFromS3(S3File file, AWS_Credentials credentials)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            try
+            {
+                TransferUtility fileTransferUtility = new
+                    TransferUtility(credentials.AWS_AccessKey, credentials.AWS_SecretKey, credentials.Region);
+
+                TransferUtilityDownloadRequest fileTransferUtilityRequest = new TransferUtilityDownloadRequest
+                {
+                    BucketName = file.Bucket,
+                    FilePath = file.LocalFilePath,
+                    Key = file.RemoteFilePath,
+                };
+                fileTransferUtility.Download(fileTransferUtilityRequest);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DownloadFromS3(S3File file, AmazonS3Client client)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            try
+            {
+                TransferUtility fileTransferUtility = new
+                    TransferUtility(client);
+
+                TransferUtilityDownloadRequest fileTransferUtilityRequest = new TransferUtilityDownloadRequest
+                {
+                    BucketName = file.Bucket,
+                    FilePath = file.LocalFilePath,
+                    Key = file.RemoteFilePath,
+                };
+                fileTransferUtility.Download(fileTransferUtilityRequest);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
     }
 }
