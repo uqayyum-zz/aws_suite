@@ -1,7 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <Authors>Umair Qayyum</Authors>
+    <Description>AWS Wrapper library that gives easier usability to work with multiple useful Amazon services.</Description>
+    <PackageTags>AWS</PackageTags>
+    <Copyright>Copyright © 2019</Copyright>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/uqayyum/aws_suite/blob/master/Readme.txt</PackageLicenseUrl>
+    <PackageId>uq_test_pkg1</PackageId>
+    <Product>AWS_SUITE_test</Product>
+    <PackageReleaseNotes>Test Publish run for AWS suite 1.0</PackageReleaseNotes>
+    <Version>1.0.1</Version>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>

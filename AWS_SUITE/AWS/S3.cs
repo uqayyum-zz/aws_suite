@@ -100,7 +100,7 @@ namespace AWS_SUITE
             try
             {
                 TransferUtility fileTransferUtility = new
-                    TransferUtility(credentials.AWS_AccessKey, credentials.AWS_SecretKey, credentials.Region);
+                    TransferUtility(getS3Client(credentials));
 
                 TransferUtilityUploadRequest fileTransferUtilityRequest = new TransferUtilityUploadRequest
                 {
@@ -177,7 +177,7 @@ namespace AWS_SUITE
             try
             {
                 TransferUtility fileTransferUtility = new
-                    TransferUtility(credentials.AWS_AccessKey, credentials.AWS_SecretKey, credentials.Region);
+                    TransferUtility(getS3Client(credentials));
 
                 TransferUtilityDownloadRequest fileTransferUtilityRequest = new TransferUtilityDownloadRequest
                 {
