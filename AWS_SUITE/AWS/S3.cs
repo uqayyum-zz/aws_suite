@@ -139,6 +139,33 @@ namespace AWS_SUITE
                 throw ex;
             }
         }
+
+        public void UploadToS3(S3File file)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            if(Credentials is null)
+                throw new Exception("AWS Credentials or client not found");
+
+            try
+            {
+                TransferUtility fileTransferUtility = new
+                    TransferUtility(getS3Client(Credentials));
+
+                TransferUtilityUploadRequest fileTransferUtilityRequest = new TransferUtilityUploadRequest
+                {
+                    BucketName = file.Bucket,
+                    FilePath = file.LocalFilePath,
+                    Key = file.RemoteFilePath,
+                };
+                fileTransferUtility.Upload(fileTransferUtilityRequest);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         #region Download
@@ -175,6 +202,33 @@ namespace AWS_SUITE
             {
                 TransferUtility fileTransferUtility = new
                     TransferUtility(client);
+
+                TransferUtilityDownloadRequest fileTransferUtilityRequest = new TransferUtilityDownloadRequest
+                {
+                    BucketName = file.Bucket,
+                    FilePath = file.LocalFilePath,
+                    Key = file.RemoteFilePath,
+                };
+                fileTransferUtility.Download(fileTransferUtilityRequest);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DownloadFromS3(S3File file)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            if (Credentials is null)
+                throw new Exception("AWS Credentials or client not found");
+
+            try
+            {
+                TransferUtility fileTransferUtility = new
+                    TransferUtility(getS3Client(Credentials));
 
                 TransferUtilityDownloadRequest fileTransferUtilityRequest = new TransferUtilityDownloadRequest
                 {
