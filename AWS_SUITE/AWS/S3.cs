@@ -1,4 +1,6 @@
-﻿using AWS_SUITE.Models;
+﻿using Amazon;
+using Amazon.S3;
+using AWS_SUITE.Models;
 using System;
 
 /**
@@ -24,5 +26,68 @@ namespace AWS_SUITE
             this.Credentials = credentials;
         }
         #endregion
+
+        #region getS3Client
+        public AmazonS3Client getS3Client()
+        {
+            try
+            {
+                return new AmazonS3Client();
+            }
+            catch(Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public AmazonS3Client getS3Client(AWS_Credentials credentials)
+        {
+            try
+            {
+                return new AmazonS3Client(credentials.AWS_AccessKey, credentials.AWS_SecretKey, credentials.Region);
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public AmazonS3Client getS3Client(string access_key, string secret_key)
+        {
+            try
+            {
+                return new AmazonS3Client(access_key, secret_key);
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public AmazonS3Client getS3Client(string access_key, string secret_key, RegionEndpoint region)
+        {
+            try
+            {
+                return new AmazonS3Client(access_key, secret_key, region);
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public AmazonS3Client getS3Client(RegionEndpoint region)
+        {
+            try
+            {
+                return new AmazonS3Client(region);
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+        #endregion
+
     }
 }
