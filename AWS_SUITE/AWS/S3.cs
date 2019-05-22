@@ -1,6 +1,8 @@
 ﻿using Amazon;
 using Amazon.S3;
+using Amazon.S3.Transfer;
 using AWS_SUITE.Models;
+using AWS_SUITE.Models.S3;
 using System;
 
 /**
@@ -89,5 +91,54 @@ namespace AWS_SUITE
         }
         #endregion
 
+        #region Upload
+        public void UploadToS3(S3File file, AWS_Credentials credentials)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            try
+            {
+                TransferUtility fileTransferUtility = new
+                    TransferUtility(credentials.AWS_AccessKey, credentials.AWS_SecretKey, credentials.Region);
+
+                TransferUtilityUploadRequest fileTransferUtilityRequest = new TransferUtilityUploadRequest
+                {
+                    BucketName = file.Bucket,
+                    FilePath = file.LocalFilePath,
+                    Key = file.RemoteFilePath,
+                };
+                fileTransferUtility.Upload(fileTransferUtilityRequest);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void UploadToS3(S3File file, AmazonS3Client client)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            try
+            {
+                TransferUtility fileTransferUtility = new
+                    TransferUtility(client);
+
+                TransferUtilityUploadRequest fileTransferUtilityRequest = new TransferUtilityUploadRequest
+                {
+                    BucketName = file.Bucket,
+                    FilePath = file.LocalFilePath,
+                    Key = file.RemoteFilePath,
+                };
+                fileTransferUtility.Upload(fileTransferUtilityRequest);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
     }
 }
