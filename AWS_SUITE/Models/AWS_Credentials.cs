@@ -9,9 +9,9 @@ namespace AWS_SUITE.Models
 {
     public class AWS_Credentials
     {
-        string AWS_AccessKey;
-        string AWS_SecretKey;
-        RegionEndpoint Region;
+        public string AWS_AccessKey { get; set; }
+        public string AWS_SecretKey { get; set; }
+        public RegionEndpoint Region { get; set; }
 
         #region Constructors
         public AWS_Credentials()
