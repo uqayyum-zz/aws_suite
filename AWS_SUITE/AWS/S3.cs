@@ -15,7 +15,7 @@ namespace AWS_SUITE
 {
     public class S3
     {
-        AWS_Credentials Credentials;
+        public AWS_Credentials Credentials { get; set; }
 
         #region Constructors
         public S3()
