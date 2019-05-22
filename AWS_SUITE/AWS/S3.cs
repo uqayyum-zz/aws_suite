@@ -2,7 +2,7 @@
 
 namespace AWS_SUITE
 {
-    public class Class1
+    public class S3
     {
     }
 }
