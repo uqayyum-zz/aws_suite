@@ -265,7 +265,7 @@ namespace AWS_SUITE
                 throw new CredentialsNotProvidedException();
 
             List<string> buckets = new List<string>();
-            using (AmazonS3Client client = getS3Client())
+            using (AmazonS3Client client = getS3Client(Credentials))
             {
                 ListBucketsRequest bucketFetchUtility = new
                     ListBucketsRequest();
@@ -290,7 +290,7 @@ namespace AWS_SUITE
                 throw new CredentialsNotProvidedException();
 
             List<string> buckets = new List<string>();
-            using (AmazonS3Client client = getS3Client())
+            using (AmazonS3Client client = getS3Client(credentials))
             {
                 ListBucketsRequest bucketFetchUtility = new
                     ListBucketsRequest();

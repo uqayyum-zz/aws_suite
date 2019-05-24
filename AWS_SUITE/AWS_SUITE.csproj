@@ -6,13 +6,13 @@
     <Description>AWS Wrapper library that gives easier usability to work with multiple useful Amazon services.</Description>
     <PackageTags>AWS Dotnet</PackageTags>
     <Copyright>Copyright © 2019 Umair Qayyum</Copyright>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageId>AWS_SUITE</PackageId>
     <Product>AWS_SUITE</Product>
     <PackageReleaseNotes>AWS suite 1.0</PackageReleaseNotes>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
