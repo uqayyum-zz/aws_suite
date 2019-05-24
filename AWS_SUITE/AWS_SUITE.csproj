@@ -4,22 +4,29 @@
     <TargetFramework>netstandard1.3</TargetFramework>
     <Authors>Umair Qayyum</Authors>
     <Description>AWS Wrapper library that gives easier usability to work with multiple useful Amazon services.</Description>
-    <PackageTags>AWS</PackageTags>
-    <Copyright>Copyright © 2019</Copyright>
+    <PackageTags>AWS Dotnet</PackageTags>
+    <Copyright>Copyright © 2019 Umair Qayyum</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://github.com/uqayyum/aws_suite/blob/master/Readme.txt</PackageLicenseUrl>
-    <PackageId>uq_test_pkg1</PackageId>
-    <Product>AWS_SUITE_test</Product>
-    <PackageReleaseNotes>Test Publish run for AWS suite 1.0</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageId>AWS_SUITE</PackageId>
+    <Product>AWS_SUITE</Product>
+    <PackageReleaseNotes>AWS suite 1.0</PackageReleaseNotes>
+    <Version>1.0.0</Version>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
+    <RepositoryUrl>https://github.com/uqayyum/aws_suite</RepositoryUrl>
+    <RepositoryType>public</RepositoryType>
+    <PackageProjectUrl>https://github.com/uqayyum/aws_suite/blob/master/AWS_SUITE/AWS_SUITE.csproj</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.3.102.3" />
+    <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.3.102.5" />
   </ItemGroup>
 
 </Project>

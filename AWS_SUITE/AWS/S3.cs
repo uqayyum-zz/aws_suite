@@ -1,9 +1,13 @@
 ﻿using Amazon;
 using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using AWS_SUITE.Exceptions;
 using AWS_SUITE.Models;
 using AWS_SUITE.Models.S3;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 /**
 * @author Umair Qayyum
@@ -44,6 +48,9 @@ namespace AWS_SUITE
 
         public AmazonS3Client getS3Client(AWS_Credentials credentials)
         {
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
             try
             {
                 return new AmazonS3Client(credentials.AWS_AccessKey, credentials.AWS_SecretKey, credentials.Region);
@@ -97,6 +104,9 @@ namespace AWS_SUITE
             if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
                 throw new Exception("S3 File is NULL or has some NULL attributes");
 
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
             try
             {
                 TransferUtility fileTransferUtility = new
@@ -145,8 +155,8 @@ namespace AWS_SUITE
             if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
                 throw new Exception("S3 File is NULL or has some NULL attributes");
 
-            if(Credentials is null)
-                throw new Exception("AWS Credentials or client not found");
+            if(Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+                throw new CredentialsNotProvidedException();
 
             try
             {
@@ -173,6 +183,9 @@ namespace AWS_SUITE
         {
             if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
                 throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
 
             try
             {
@@ -222,8 +235,8 @@ namespace AWS_SUITE
             if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
                 throw new Exception("S3 File is NULL or has some NULL attributes");
 
-            if (Credentials is null)
-                throw new Exception("AWS Credentials or client not found");
+            if (Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+                throw new CredentialsNotProvidedException();
 
             try
             {
@@ -242,6 +255,78 @@ namespace AWS_SUITE
             {
                 throw ex;
             }
+        }
+        #endregion
+        
+        #region GetBuckets
+        public List<string> GetAllBuckets()
+        {
+            if (Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            List<string> buckets = new List<string>();
+            using (AmazonS3Client client = getS3Client())
+            {
+                ListBucketsRequest bucketFetchUtility = new
+                    ListBucketsRequest();
+
+                Task<ListBucketsResponse> bucketsResponse = client.ListBucketsAsync(bucketFetchUtility);
+                bucketsResponse.Wait();
+
+                if (bucketsResponse.IsCompleted)
+                {
+                    foreach (S3Bucket bucket in bucketsResponse.Result.Buckets)
+                    {
+                        buckets.Add(bucket.BucketName);
+                    }
+                }
+            }
+            return buckets;
+        }
+
+        public List<string> GetAllBuckets(AWS_Credentials credentials)
+        {
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            List<string> buckets = new List<string>();
+            using (AmazonS3Client client = getS3Client())
+            {
+                ListBucketsRequest bucketFetchUtility = new
+                    ListBucketsRequest();
+
+                Task<ListBucketsResponse> bucketsResponse = client.ListBucketsAsync(bucketFetchUtility);
+                bucketsResponse.Wait();
+
+                if (bucketsResponse.IsCompleted)
+                {
+                    foreach (S3Bucket bucket in bucketsResponse.Result.Buckets)
+                    {
+                        buckets.Add(bucket.BucketName);
+                    }
+                }
+            }
+            return buckets;
+        }
+
+        public List<string> GetAllBuckets(AmazonS3Client client)
+        {
+
+            List<string> buckets = new List<string>();
+            ListBucketsRequest bucketFetchUtility = new
+                ListBucketsRequest();
+
+            Task<ListBucketsResponse> bucketsResponse = client.ListBucketsAsync(bucketFetchUtility);
+            bucketsResponse.Wait();
+
+            if (bucketsResponse.IsCompleted)
+            {
+                foreach (S3Bucket bucket in bucketsResponse.Result.Buckets)
+                {
+                    buckets.Add(bucket.BucketName);
+                }
+            }
+            return buckets;
         }
         #endregion
     }
