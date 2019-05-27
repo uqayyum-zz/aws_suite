@@ -7,6 +7,7 @@ using AWS_SUITE.Models;
 using AWS_SUITE.Models.S3;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 /**
@@ -409,6 +410,208 @@ namespace AWS_SUITE
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+        #endregion
+
+        #region CreateBucket
+        public void CreateBucket(string bucket_name)
+        {
+            if (Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+            
+            using (AmazonS3Client client = getS3Client(Credentials))
+            {
+                List<string> existing_buckets = GetAllBuckets();
+                try
+                {
+                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    {
+                        var request = new PutBucketRequest
+                        {
+                            BucketName = bucket_name,
+                            UseClientRegion = true
+                        };
+
+                        Task<PutBucketResponse> task = client.PutBucketAsync(request);
+                        task.Wait();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        public void CreateBucket(string bucket_name, AWS_Credentials credentials)
+        {
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            using (AmazonS3Client client = getS3Client(credentials))
+            {
+                List<string> existing_buckets = GetAllBuckets(credentials);
+                try
+                {
+                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    {
+                        var request = new PutBucketRequest
+                        {
+                            BucketName = bucket_name,
+                            UseClientRegion = true
+                        };
+
+                        Task<PutBucketResponse> task = client.PutBucketAsync(request);
+                        task.Wait();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        public void CreateBucket(string bucket_name, AmazonS3Client client)
+        {
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            using (client)
+            {
+                List<string> existing_buckets = GetAllBuckets(client);
+                try
+                {
+                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    {
+                        var request = new PutBucketRequest
+                        {
+                            BucketName = bucket_name,
+                            UseClientRegion = true
+                        };
+
+                        Task<PutBucketResponse> task = client.PutBucketAsync(request);
+                        task.Wait();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+        #endregion
+
+        #region DeleteBucket
+        public void DeleteBucket(string bucket_name)
+        {
+            if (Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            using (AmazonS3Client client = getS3Client(Credentials))
+            {
+                List<string> existing_buckets = GetAllBuckets();
+                try
+                {
+                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    {
+                        var request = new DeleteBucketRequest
+                        {
+                            BucketName = bucket_name,
+                            UseClientRegion = true
+                        };
+
+                        Task<DeleteBucketResponse> task = client.DeleteBucketAsync(request);
+                        task.Wait();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        public void DeleteBucket(string bucket_name, AWS_Credentials credentials)
+        {
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            using (AmazonS3Client client = getS3Client(credentials))
+            {
+                List<string> existing_buckets = GetAllBuckets(credentials);
+                try
+                {
+                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    {
+                        var request = new DeleteBucketRequest
+                        {
+                            BucketName = bucket_name,
+                            UseClientRegion = true
+                        };
+
+                        Task<DeleteBucketResponse> task = client.DeleteBucketAsync(request);
+                        task.Wait();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        public void DeleteBucket(string bucket_name, AmazonS3Client client)
+        {
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            using (client)
+            {
+                List<string> existing_buckets = GetAllBuckets(client);
+                try
+                {
+                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    {
+                        var request = new DeleteBucketRequest
+                        {
+                            BucketName = bucket_name,
+                            UseClientRegion = true
+                        };
+
+                        Task<DeleteBucketResponse> task = client.DeleteBucketAsync(request);
+                        task.Wait();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
         }
         #endregion
