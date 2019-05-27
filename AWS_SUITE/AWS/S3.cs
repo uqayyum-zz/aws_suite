@@ -329,5 +329,88 @@ namespace AWS_SUITE
             return buckets;
         }
         #endregion
+
+        #region Delete
+        public void DeleteFromS3(S3File file, AWS_Credentials credentials)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            try
+            {
+                using (AmazonS3Client client = getS3Client(credentials))
+                {
+                    DeleteObjectRequest request = new
+                        DeleteObjectRequest();
+
+                    request.BucketName = file.Bucket;
+                    request.Key = file.RemoteFilePath;
+
+                    Task<DeleteObjectResponse> task = client.DeleteObjectAsync(request);
+                    task.Wait();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DeleteFromS3(S3File file, AmazonS3Client client)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            try
+            {
+                using (client)
+                {
+                    DeleteObjectRequest request = new
+                        DeleteObjectRequest();
+
+                    request.BucketName = file.Bucket;
+                    request.Key = file.RemoteFilePath;
+
+                    Task<DeleteObjectResponse> task = client.DeleteObjectAsync(request);
+                    task.Wait();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DeleteFromS3(S3File file)
+        {
+            if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
+                throw new Exception("S3 File is NULL or has some NULL attributes");
+
+            if (Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            try
+            {
+                using (AmazonS3Client client = getS3Client(Credentials))
+                {
+                    DeleteObjectRequest request = new
+                        DeleteObjectRequest();
+
+                    request.BucketName = file.Bucket;
+                    request.Key = file.RemoteFilePath;
+
+                    Task<DeleteObjectResponse> task = client.DeleteObjectAsync(request);
+                    task.Wait();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
     }
 }
