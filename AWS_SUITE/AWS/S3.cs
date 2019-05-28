@@ -41,7 +41,7 @@ namespace AWS_SUITE
             {
                 return new AmazonS3Client();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex.InnerException;
             }
@@ -156,7 +156,7 @@ namespace AWS_SUITE
             if (file is null || file.RemoteFilePath is null || file.Bucket is null || file.LocalFilePath is null)
                 throw new Exception("S3 File is NULL or has some NULL attributes");
 
-            if(Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+            if (Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
                 throw new CredentialsNotProvidedException();
 
             try
@@ -258,7 +258,7 @@ namespace AWS_SUITE
             }
         }
         #endregion
-        
+
         #region GetBuckets
         public List<string> GetAllBuckets()
         {
@@ -367,17 +367,14 @@ namespace AWS_SUITE
 
             try
             {
-                using (client)
-                {
-                    DeleteObjectRequest request = new
-                        DeleteObjectRequest();
+                DeleteObjectRequest request = new
+                    DeleteObjectRequest();
 
-                    request.BucketName = file.Bucket;
-                    request.Key = file.RemoteFilePath;
+                request.BucketName = file.Bucket;
+                request.Key = file.RemoteFilePath;
 
-                    Task<DeleteObjectResponse> task = client.DeleteObjectAsync(request);
-                    task.Wait();
-                }
+                Task<DeleteObjectResponse> task = client.DeleteObjectAsync(request);
+                task.Wait();
             }
             catch (Exception ex)
             {
@@ -424,7 +421,7 @@ namespace AWS_SUITE
             {
                 throw new ArgumentNullException();
             }
-            
+
             using (AmazonS3Client client = getS3Client(Credentials))
             {
                 List<string> existing_buckets = GetAllBuckets();
@@ -489,28 +486,24 @@ namespace AWS_SUITE
             {
                 throw new ArgumentNullException();
             }
-
-            using (client)
+            List<string> existing_buckets = GetAllBuckets(client);
+            try
             {
-                List<string> existing_buckets = GetAllBuckets(client);
-                try
+                if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
                 {
-                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    var request = new PutBucketRequest
                     {
-                        var request = new PutBucketRequest
-                        {
-                            BucketName = bucket_name,
-                            UseClientRegion = true
-                        };
+                        BucketName = bucket_name,
+                        UseClientRegion = true
+                    };
 
-                        Task<PutBucketResponse> task = client.PutBucketAsync(request);
-                        task.Wait();
-                    }
+                    Task<PutBucketResponse> task = client.PutBucketAsync(request);
+                    task.Wait();
                 }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
         #endregion
@@ -531,7 +524,7 @@ namespace AWS_SUITE
                 List<string> existing_buckets = GetAllBuckets();
                 try
                 {
-                    if ( !(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null) )
+                    if (!(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null))
                     {
                         var request = new DeleteBucketRequest
                         {
@@ -565,7 +558,7 @@ namespace AWS_SUITE
                 List<string> existing_buckets = GetAllBuckets(credentials);
                 try
                 {
-                    if ( !(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null) )
+                    if (!(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null))
                     {
                         var request = new DeleteBucketRequest
                         {
@@ -591,27 +584,24 @@ namespace AWS_SUITE
                 throw new ArgumentNullException();
             }
 
-            using (client)
+            List<string> existing_buckets = GetAllBuckets(client);
+            try
             {
-                List<string> existing_buckets = GetAllBuckets(client);
-                try
+                if (!(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null))
                 {
-                    if ( !(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null) )
+                    var request = new DeleteBucketRequest
                     {
-                        var request = new DeleteBucketRequest
-                        {
-                            BucketName = bucket_name,
-                            UseClientRegion = true
-                        };
+                        BucketName = bucket_name,
+                        UseClientRegion = true
+                    };
 
-                        Task<DeleteBucketResponse> task = client.DeleteBucketAsync(request);
-                        task.Wait();
-                    }
+                    Task<DeleteBucketResponse> task = client.DeleteBucketAsync(request);
+                    task.Wait();
                 }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
         #endregion
