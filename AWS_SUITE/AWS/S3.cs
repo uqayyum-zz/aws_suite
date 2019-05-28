@@ -531,7 +531,7 @@ namespace AWS_SUITE
                 List<string> existing_buckets = GetAllBuckets();
                 try
                 {
-                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    if ( !(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null) )
                     {
                         var request = new DeleteBucketRequest
                         {
@@ -565,7 +565,7 @@ namespace AWS_SUITE
                 List<string> existing_buckets = GetAllBuckets(credentials);
                 try
                 {
-                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    if ( !(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null) )
                     {
                         var request = new DeleteBucketRequest
                         {
@@ -596,7 +596,7 @@ namespace AWS_SUITE
                 List<string> existing_buckets = GetAllBuckets(client);
                 try
                 {
-                    if (existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null)
+                    if ( !(existing_buckets.Where(b => b.ToString() == bucket_name).FirstOrDefault() is null) )
                     {
                         var request = new DeleteBucketRequest
                         {
