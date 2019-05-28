@@ -1,4 +1,5 @@
-﻿using Amazon;
+﻿using System;
+using Amazon;
 
 /**
 * @author Umair Qayyum
@@ -18,17 +19,15 @@ namespace AWS_SUITE.Models
         {
         }
 
-        public AWS_Credentials(string access_key, string secret_key)
+        public AWS_Credentials(string aWS_AccessKey, string aWS_SecretKey)
         {
-            this.AWS_AccessKey = access_key;
-            this.AWS_SecretKey = secret_key;
+            AWS_AccessKey = aWS_AccessKey ?? throw new ArgumentNullException(nameof(aWS_AccessKey));
+            AWS_SecretKey = aWS_SecretKey ?? throw new ArgumentNullException(nameof(aWS_SecretKey));
         }
 
-        public AWS_Credentials(string access_key, string secret_key, RegionEndpoint region)
+        public AWS_Credentials(string aWS_AccessKey, string aWS_SecretKey, RegionEndpoint region) : this(aWS_AccessKey, aWS_SecretKey)
         {
-            this.AWS_AccessKey = access_key;
-            this.AWS_SecretKey = secret_key;
-            this.Region = region;
+            Region = region ?? throw new ArgumentNullException(nameof(region));
         }
         #endregion
     }
