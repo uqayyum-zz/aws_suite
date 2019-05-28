@@ -605,5 +605,133 @@ namespace AWS_SUITE
             }
         }
         #endregion
+
+        #region GetBucketKeys
+        public List<string> GetBucketKeys(string bucket_name, string prefix = null, long max_count = -1)
+        {
+            if (Credentials is null || Credentials.AWS_AccessKey is null || Credentials.AWS_SecretKey is null || Credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            List<string> keys = new List<string>();
+            try
+            {
+                using (var client = new AmazonS3Client(Credentials.AWS_AccessKey, Credentials.AWS_SecretKey, Credentials.Region))
+                {
+                    ListObjectsV2Request request = new ListObjectsV2Request();
+                    request.BucketName = bucket_name;
+                    request.Prefix = prefix;
+
+                    if (max_count > 0 && max_count < 1000)
+                        request.MaxKeys = (int)max_count;
+
+                    Task<ListObjectsV2Response> task;
+                    ListObjectsV2Response response;
+                    long iterator = 0;
+                    do
+                    {
+                        task = client.ListObjectsV2Async(request);
+                        task.Wait();
+
+                        response = task.Result;
+                        keys.AddRange(response.S3Objects.Select(x => x.Key));
+                        iterator += response.S3Objects.Count;
+                        request.ContinuationToken = response.NextContinuationToken;
+                    } while (response.IsTruncated == true && ((max_count == -1) ? true : iterator < max_count));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return keys;
+        }
+
+        public List<string> GetBucketKeys(string bucket_name, AWS_Credentials credentials, string prefix = null, long max_count = 100_000)
+        {
+            if (credentials is null || credentials.AWS_AccessKey is null || credentials.AWS_SecretKey is null || credentials.Region is null)
+                throw new CredentialsNotProvidedException();
+
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            List<string> keys = new List<string>();
+            try
+            {
+                using (var client = new AmazonS3Client(credentials.AWS_AccessKey, credentials.AWS_SecretKey, credentials.Region))
+                {
+                    ListObjectsV2Request request = new ListObjectsV2Request();
+                    request.BucketName = bucket_name;
+                    request.Prefix = prefix;
+
+                    if (max_count > 0 && max_count < 1000)
+                        request.MaxKeys = (int)max_count;
+
+                    Task<ListObjectsV2Response> task;
+                    ListObjectsV2Response response;
+                    long iterator = 0;
+                    do
+                    {
+                        task = client.ListObjectsV2Async(request);
+                        task.Wait();
+
+                        response = task.Result;
+                        keys.AddRange(response.S3Objects.Select(x => x.Key));
+                        iterator += response.S3Objects.Count;
+                        request.ContinuationToken = response.NextContinuationToken;
+                    } while (response.IsTruncated == true && ((max_count == -1) ? true : iterator < max_count));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return keys;
+        }
+
+        public List<string> GetBucketKeys(string bucket_name, AmazonS3Client client, string prefix = null, long max_count = 100_000)
+        {
+            if (bucket_name is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            List<string> keys = new List<string>();
+            try
+            {
+                ListObjectsV2Request request = new ListObjectsV2Request();
+                request.BucketName = bucket_name;
+                request.Prefix = prefix;
+
+                if (max_count > 0 && max_count < 1000)
+                    request.MaxKeys = (int)max_count;
+
+                Task<ListObjectsV2Response> task;
+                ListObjectsV2Response response;
+                long iterator = 0;
+                do
+                {
+                    task = client.ListObjectsV2Async(request);
+                    task.Wait();
+
+                    response = task.Result;
+                    keys.AddRange(response.S3Objects.Select(x => x.Key));
+                    iterator += response.S3Objects.Count;
+                    request.ContinuationToken = response.NextContinuationToken;
+                } while (response.IsTruncated == true && ((max_count == -1) ? true : iterator < max_count));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return keys;
+        }
+        #endregion
     }
 }
