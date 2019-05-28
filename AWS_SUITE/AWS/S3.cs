@@ -30,7 +30,7 @@ namespace AWS_SUITE
 
         public S3(AWS_Credentials credentials)
         {
-            this.Credentials = credentials;
+            Credentials = credentials ?? throw new ArgumentNullException(nameof(credentials));
         }
         #endregion
 
